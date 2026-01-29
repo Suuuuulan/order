@@ -1,0 +1,500 @@
+/* 基础样式重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Microsoft YaHei', 'SimHei', 'Helvetica Neue', Arial, sans-serif;
+    background: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+.app-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* 工具栏 */
+.toolbar {
+    background: #fff;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.toolbar h1 {
+    font-size: 20px;
+    color: #333;
+}
+
+.toolbar-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* 按钮样式 */
+.btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.3s;
+}
+
+.btn-primary {
+    background: #1890ff;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: #40a9ff;
+}
+
+.btn-secondary {
+    background: #f0f0f0;
+    color: #333;
+    border: 1px solid #d9d9d9;
+}
+
+.btn-secondary:hover {
+    background: #e0e0e0;
+}
+
+.btn-small {
+    padding: 4px 8px;
+    font-size: 12px;
+}
+
+.btn-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #999;
+}
+
+.btn-close:hover {
+    color: #333;
+}
+
+.btn-delete {
+    background: #ff4d4f;
+    color: #fff;
+    padding: 4px 8px;
+    font-size: 12px;
+}
+
+.btn-delete:hover {
+    background: #ff7875;
+}
+
+/* 设置面板 */
+.settings-panel {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.settings-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.form-group label {
+    font-weight: 500;
+    color: #666;
+    font-size: 14px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="date"] {
+    padding: 8px 12px;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #1890ff;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.logo-preview {
+    max-width: 150px;
+    max-height: 80px;
+    margin-top: 10px;
+    border: 1px solid #d9d9d9;
+    padding: 5px;
+}
+
+/* 出库单主体 */
+.delivery-note {
+    background: #fff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    min-height: 800px;
+}
+
+/* 头部 */
+.note-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #333;
+}
+
+.logo-section {
+    width: 120px;
+}
+
+.company-logo {
+    max-width: 100%;
+    max-height: 80px;
+    object-fit: contain;
+}
+
+.title-section {
+    flex: 1;
+    text-align: center;
+}
+
+.title-section h2 {
+    font-size: 32px;
+    font-weight: bold;
+    letter-spacing: 8px;
+    margin-bottom: 5px;
+}
+
+.company-name {
+    font-size: 14px;
+    color: #666;
+}
+
+.number-section {
+    text-align: right;
+    font-size: 14px;
+}
+
+.number-section .label {
+    color: #666;
+}
+
+#note-number {
+    font-weight: bold;
+    color: #333;
+}
+
+/* 信息区域 */
+.info-section {
+    margin-bottom: 20px;
+}
+
+.info-row {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.info-label {
+    color: #666;
+    font-weight: 500;
+}
+
+.info-value {
+    color: #333;
+    border-bottom: 1px solid #999;
+    min-width: 150px;
+    padding: 0 5px;
+}
+
+/* 表格 */
+.table-section {
+    margin-bottom: 20px;
+}
+
+#items-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+#items-table th,
+#items-table td {
+    border: 1px solid #333;
+    padding: 10px 8px;
+    text-align: center;
+}
+
+#items-table th {
+    background: #f5f5f5;
+    font-weight: 600;
+}
+
+#items-table input {
+    width: 100%;
+    border: none;
+    padding: 5px;
+    text-align: center;
+    font-size: 14px;
+    background: transparent;
+}
+
+#items-table input:focus {
+    outline: none;
+    background: #e6f7ff;
+}
+
+#items-table td.amount {
+    font-weight: 500;
+}
+
+#btn-add-row {
+    margin-top: 10px;
+}
+
+/* 汇总区域 */
+.summary-section {
+    margin: 20px 0;
+    padding: 15px;
+    background: #fafafa;
+    border: 1px solid #e8e8e8;
+    border-radius: 4px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.summary-row.total {
+    font-size: 16px;
+    font-weight: bold;
+    border-top: 1px solid #d9d9d9;
+    padding-top: 8px;
+    margin-top: 8px;
+}
+
+.summary-label {
+    color: #666;
+}
+
+.summary-value {
+    color: #333;
+    min-width: 120px;
+    text-align: right;
+}
+
+.summary-value.chinese {
+    font-weight: bold;
+    color: #1890ff;
+}
+
+/* 签名区域 */
+.signature-section {
+    margin-top: 40px;
+}
+
+.signature-row {
+    display: flex;
+    gap: 60px;
+    margin-bottom: 30px;
+}
+
+.signature-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+}
+
+.signature-item.full-width {
+    flex: 1;
+}
+
+.signature-label {
+    color: #666;
+    white-space: nowrap;
+}
+
+.signature-input {
+    border: none;
+    border-bottom: 1px solid #999;
+    padding: 5px;
+    font-size: 14px;
+    width: 120px;
+    text-align: center;
+}
+
+.signature-input:focus {
+    outline: none;
+    border-bottom-color: #1890ff;
+}
+
+.signature-value {
+    border-bottom: 1px solid #333;
+    min-width: 100px;
+    padding: 0 10px;
+    display: inline-block;
+}
+
+.signature-line {
+    flex: 1;
+    border-bottom: 1px solid #333;
+    height: 30px;
+}
+
+.signature-bottom {
+    margin-top: 60px;
+}
+
+/* 打印相关 */
+@media print {
+    body {
+        background: #fff;
+    }
+
+    .app-container {
+        padding: 0;
+        max-width: 100%;
+    }
+
+    .no-print {
+        display: none !important;
+    }
+
+    .print-only {
+        display: block !important;
+    }
+
+    .delivery-note {
+        box-shadow: none;
+        padding: 20px;
+        border-radius: 0;
+    }
+
+    #items-table input {
+        border: none;
+        background: transparent;
+    }
+
+    .signature-input {
+        border: none;
+        border-bottom: 1px solid #333;
+    }
+
+    /* A4 纸张设置 */
+    @page {
+        size: A4;
+        margin: 10mm;
+    }
+}
+
+.print-only {
+    display: none;
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+    .toolbar {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .toolbar-actions {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .note-header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    .logo-section,
+    .number-section {
+        width: 100%;
+    }
+
+    .delivery-note {
+        padding: 20px;
+    }
+
+    .signature-row {
+        flex-direction: column;
+        gap: 20px;
+    }
+}
+
+/* 动画 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.settings-panel {
+    animation: fadeIn 0.3s ease;
+}
+
+/* 行删除按钮 */
+.delete-cell {
+    position: relative;
+}
+
+.row-actions {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+}

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>出库单打印系统</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- PDF导出库 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 工具栏 -->
+        <div class="toolbar no-print">
+            <h1>出库单管理系统</h1>
+            <div class="toolbar-actions">
+                <button id="btn-settings" class="btn btn-secondary">
+                    <span>⚙️</span> 设置
+                </button>
+                <button id="btn-download-template" class="btn btn-secondary">
+                    <span>📥</span> 下载模板
+                </button>
+                <button id="btn-import-template" class="btn btn-secondary">
+                    <span>📤</span> 导入模板
+                </button>
+                <input type="file" id="file-import" accept=".json" style="display: none;">
+                <button id="btn-print" class="btn btn-primary">
+                    <span>🖨️</span> 打印
+                </button>
+                <button id="btn-export-pdf" class="btn btn-primary">
+                    <span>📄</span> 导出PDF
+                </button>
+            </div>
+        </div>
+
+        <!-- 设置面板 -->
+        <div id="settings-panel" class="settings-panel no-print" style="display: none;">
+            <div class="settings-header">
+                <h3>系统设置</h3>
+                <button id="btn-close-settings" class="btn-close">×</button>
+            </div>
+            <div class="settings-content">
+                <div class="form-group">
+                    <label>公司名称</label>
+                    <input type="text" id="company-name" placeholder="请输入公司名称">
+                </div>
+                <div class="form-group">
+                    <label>公司Logo</label>
+                    <input type="file" id="company-logo" accept="image/*">
+                    <img id="logo-preview" class="logo-preview" style="display: none;">
+                    <button id="btn-remove-logo" class="btn btn-small" style="display: none;">删除Logo</button>
+                </div>
+                <div class="form-group">
+                    <label>税率 (%)</label>
+                    <input type="number" id="tax-rate" value="13" min="0" max="100" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label>出库单标题</label>
+                    <input type="text" id="doc-title" value="出库单" placeholder="请输入标题">
+                </div>
+                <div class="form-group">
+                    <button id="btn-save-settings" class="btn btn-primary">保存设置</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 出库单主体 -->
+        <div id="delivery-note" class="delivery-note">
+            <!-- 头部 -->
+            <div class="note-header">
+                <div class="logo-section">
+                    <img id="display-logo" class="company-logo" style="display: none;">
+                </div>
+                <div class="title-section">
+                    <h2 id="display-title">出库单</h2>
+                    <p id="display-company" class="company-name"></p>
+                </div>
+                <div class="number-section">
+                    <span class="label">编号：</span>
+                    <span id="note-number"></span>
+                </div>
+            </div>
+
+            <!-- 信息区域 -->
+            <div class="info-section no-print">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>客户名称</label>
+                        <input type="text" id="customer-name" placeholder="请输入客户名称">
+                    </div>
+                    <div class="form-group">
+                        <label>送货地址</label>
+                        <input type="text" id="delivery-address" placeholder="请输入送货地址">
+                    </div>
+                    <div class="form-group">
+                        <label>出库日期</label>
+                        <input type="date" id="delivery-date">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 打印信息显示 -->
+            <div class="info-section print-only">
+                <div class="info-row">
+                    <span class="info-label">客户名称：</span>
+                    <span id="print-customer-name" class="info-value"></span>
+                    <span class="info-label">出库日期：</span>
+                    <span id="print-delivery-date" class="info-value"></span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">送货地址：</span>
+                    <span id="print-delivery-address" class="info-value"></span>
+                </div>
+            </div>
+
+            <!-- 表格区域 -->
+            <div class="table-section">
+                <table id="items-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 8%;">序号</th>
+                            <th style="width: 20%;">产品名称</th>
+                            <th style="width: 12%;">规格</th>
+                            <th style="width: 10%;">单位</th>
+                            <th style="width: 10%;">数量</th>
+                            <th style="width: 12%;">单价</th>
+                            <th style="width: 13%;">金额</th>
+                            <th style="width: 15%;">备注</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        <!-- 动态行 -->
+                    </tbody>
+                </table>
+                <button id="btn-add-row" class="btn btn-secondary no-print">+ 添加行</button>
+            </div>
+
+            <!-- 金额汇总 -->
+            <div class="summary-section">
+                <div class="summary-row">
+                    <span class="summary-label">合计金额：</span>
+                    <span id="total-amount" class="summary-value">¥0.00</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">税率：</span>
+                    <span id="display-tax-rate" class="summary-value">13%</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">税额：</span>
+                    <span id="tax-amount" class="summary-value">¥0.00</span>
+                </div>
+                <div class="summary-row total">
+                    <span class="summary-label">价税合计：</span>
+                    <span id="total-with-tax" class="summary-value">¥0.00</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">大写金额：</span>
+                    <span id="amount-in-chinese" class="summary-value chinese"></span>
+                </div>
+            </div>
+
+            <!-- 签名区域 -->
+            <div class="signature-section">
+                <div class="signature-row">
+                    <div class="signature-item">
+                        <span class="signature-label">制表人：</span>
+                        <input type="text" id="maker" class="signature-input no-print" placeholder="请输入">
+                        <span id="print-maker" class="print-only signature-value"></span>
+                    </div>
+                    <div class="signature-item">
+                        <span class="signature-label">领料人：</span>
+                        <input type="text" id="picker" class="signature-input no-print" placeholder="请输入">
+                        <span id="print-picker" class="print-only signature-value"></span>
+                    </div>
+                    <div class="signature-item">
+                        <span class="signature-label">审核：</span>
+                        <input type="text" id="reviewer" class="signature-input no-print" placeholder="请输入">
+                        <span id="print-reviewer" class="print-only signature-value"></span>
+                    </div>
+                </div>
+                <div class="signature-row signature-bottom">
+                    <div class="signature-item full-width">
+                        <span class="signature-label">收货人签字：</span>
+                        <div class="signature-line"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 脚本文件 -->
+    <script src="js/storage.js"></script>
+    <script src="js/template.js"></script>
+    <script src="js/pdf-export.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
